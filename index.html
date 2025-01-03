@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>guesing game</title>
+
+<style>* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  color: white;
+}
+body {
+  background-color: black;
+}
+.upper-site {
+  display: flex;
+  width: 100%;
+  align-content: space-around;
+  height: 90px;
+}
+.restart {
+  display: inline-block;
+  margin-top: 10px;
+  width: 50%;
+  margin-left: 10px;
+  
+}
+.restart span:hover{
+     background :skyblue;
+}
+.restart span {
+  background-color: white;
+  display: inline-block;
+  color: black;
+  padding: 20px;
+  border-radius:10px;
+}
+.range {
+  display: inline-block;
+  width: 40%;
+  text-align: right;
+  margin-right: 10px;
+  margin-top: 20px;
+  font-size: 1.2em;
+}
+.center-line {
+  border-bottom: 6px solid white;
+  position: relative;
+  width: 100%;
+  color: black;
+}
+.center-line span {
+  background-color: white;
+  padding: 20px;
+  position: absolute;
+  left: 40%;
+  bottom: -47px;
+  color: inherit;
+  font-size: 2em;
+  border-radius:10px;
+}
+.guess-number {
+  width: 100%;
+  position: relative;
+}
+.guess-number h2 {
+  position: absolute;
+  left: 25%;
+}
+.guest-field {
+  margin-top: 70px;
+
+  padding-top: 15px;
+  padding-bottom: 15px;
+  display: grid;
+  width: 100%;
+  max-height: 100px;
+  position: relative;
+  grid-template-columns: 12;
+}
+.guest-field span {
+  grid-column: 8/12;
+  margin: 10%;
+}
+.guest-field input {
+  grid-column: 2/7;
+  width: 200px;
+  height: 90px;
+  z-index: 2;
+  color: white;
+  font-size: 3em;
+  text-align: center;
+  background-color: slategray;
+  border: 4px solid white;
+  border-radius: 10px;
+}
+.check-and-score {
+  display: grid;
+  grid-template-columns: 8;
+  margin-top: 50px;
+}
+.scores {
+  display: inline-block;
+  grid-column: 6/8;
+}
+.checkButton {
+  color: black;
+  background-color: white;
+  grid-column: 2/5;
+  max-width: 100px;
+  text-align: center;
+  padding: 10px;
+  font-weight: bolder;
+  font-size: 1.1em;
+  max-height: 50px;
+  padding-top: 15px;
+  border-radius:10px;
+}
+.checkButton:hover{
+     background : lightblue;
+}
+.score {
+  margin: 10px;
+  font-size: 1.3em;
+}
+.hight-score {
+  margin: 10px;
+  font-size: 1.3em;
+  font-size: 1.3em;
+}
+
+@media screen and (max-width: 350px) {
+  .guest-field input {
+    width: 100px;
+  }
+}
+
+</style>
+</head>
+
+<body>
+    <div class="wrapper">
+        <div class="upper-site">
+            <h3 class="restart"><span onclick="restartFn()" class="restart-span">Restart !</span></h3>
+            <h5 class="range">
+                < between 1 to 20>
+            </h5>
+        </div><br>
+        <div class="guess-number">
+            <h2>GUEST NUMBER🤔</h2>
+        </div><br><br><br><br><br>
+        <div class="center-line">
+            <span class="center-span">?</span>
+        </div>
+        <div class="guest-field">
+            <input id="guess-input" min="1" max="20" type="number"> <span class="message">Guest number ❓</span>
+        </div>
+        <div class="check-and-score">
+            <span class="checkButton" onclick="check()">check</span>
+            <div class="scores">
+                <p class="score">score: <span class="score-span"> 20</span></p>
+                <p class="hight-score">hight score: <span class="hightScore"> 0</span></p>
+            </div>
+        </div>
+    </div>
+    <script>
+"use strict";
+/************************************************************** * 
+ *****************    GOALS   *********************************
+******************************************************************
+
+ * firstly we want our app to guess a number on its own and store it in variable
+ * then we need the user select a number on his own if the number that he selected 
+ * is greater than the number that  our app create the in the guess messege place it show it too much
+ * and if its less than it the message shoiwsn its too less
+ * and both cases the score will deacresed by one till he gess it right
+ * if the score reaches 0 without guessing it which is hardly the it shows you loose🤪
+ * if he gusess it right the score he gate will then plce as the high score
+ * and the answer will then be placed in the position of question mark
+ * 
+ and the if he click on restart then the game start freshly
+
+ * 
+ */
+//                   STEP 1: guess the number
+let score = 20;
+let correctAnswer = Math.trunc(Math.random() * 20 + 1);
+console.log(correctAnswer);
+
+//STEP 2: Grab all fields from the page
+
+let checkButton = document.querySelector("checkButton");
+let scoreField = document.querySelector(".score-span");
+let hightScore = document.querySelector(".hightScore");
+let restart = document.querySelector(".restart-span");
+let message = document.querySelector(".message");
+let centerDisplay = document.querySelector(".center-span");
+hightScore.textContent = Number(0);
+// STEP 3:  cheack the equality
+
+function check() {
+  let guessField = document.querySelector("#guess-input").value;
+  guessField = Number(guessField);
+  console.log(typeof guessField);
+  console.log(guessField);
+  if (guessField == 0) {
+    message.textContent = "please guess a number 1 to 20";
+  } else if (guessField > correctAnswer) {
+    message.textContent = "wow its too much😂";
+    score--;
+  } else if (guessField < correctAnswer) {
+    message.textContent = "oops 🙄 its to low  ";
+    score--;
+  } else if (correctAnswer === guessField) {
+    message.textContent = "correct ! 😁";
+    centerDisplay.textContent = correctAnswer;
+    document.querySelector("body").style.background =
+      "rgba(13, 247, 13, 0.589)";
+    centerDisplay.style.padding = "40px";
+    setTimeout(() => {
+      message.textContent = "guess another number";
+      centerDisplay.textContent = "?";
+      document.querySelector("body").style.background = "black";
+      centerDisplay.style.padding = "20px";
+    }, 3000);
+
+    if (score > hightScore.textContent) {
+      hightScore.textContent = score;
+    }
+    score = 20;
+    console.clear();
+    correctAnswer = Math.trunc(Math.random() * 20 + 1);
+    console.log(correctAnswer);
+  }
+  scoreField.textContent = score;
+  if (score <= 0) {
+    message.textContent = "Game over !!! 😡 ";
+    score = 1;
+    centerDisplay.textContent = correctAnswer;
+  }
+}
+function restartFn() {
+  message.textContent = "Game restarted ";
+  score = 20;
+  document.querySelector("#guess-input").value = "";
+}
+//checkButton.addEventListener("click", check());
+</script>
+</body>
+
+</html>
